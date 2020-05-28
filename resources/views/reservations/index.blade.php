@@ -22,11 +22,13 @@
                                 新規予約
                             </button>
                         </form>
-                        <form method="GET" action="{{ route('reservations.show', ['id' => $reservations->reservation_id]) }}" class="p-4">
-                            <button type="submit" class="btn btn-success">
-                                予約の確認・変更
-                            </button>
-                        </form>
+                        @if ($newAccount !== 1)
+                            <form method="GET" action="{{ route('reservations.show', ['id' => $reservations->reservation_id]) }}" class="p-4">
+                                <button type="submit" class="btn btn-success">
+                                    予約の確認・変更
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>

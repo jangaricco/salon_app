@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Reserve;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Input\Input;
 
 class ReservationController extends Controller
 {
@@ -19,14 +20,21 @@ class ReservationController extends Controller
     public function index()
     {
         $id = Auth::id();
+        $account = DB::table('reserves')->where('user_id', $id)->first();
 
-        $reservations = DB::table('reserves')
-                        ->where('user_id', $id)
-                        ->select('reservation_id','user_id','menu', 'start_at', 'updated_at')
-                        ->latest()
-                        ->first();
+        if ($account !== NULL){
+            $reservations = DB::table('reserves')
+            ->where('user_id', $id)
+            ->select('reservation_id','user_id','menu', 'start_at', 'updated_at')
+            ->latest()
+            ->first();
+            $newAccount = 0;
+        } else {
+            $reservations = NULL;
+            $newAccount = 1;
+        }
         
-        return view('reservations.index', compact('reservations'));
+        return view('reservations.index', compact('reservations', 'newAccount'));
     }
 
     /**
